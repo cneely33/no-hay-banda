@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Rewrite one-sided film-review text into dual-reader sample analyses.
 
@@ -14,7 +13,6 @@ Same llama.cpp stack as the other Pozbutton scripts (port 8018).
 Usage:
   python3 convert_reviews.py --check
   python3 convert_reviews.py --dry-run --input-dir summaries
-  python3 convert_reviews.py --file summaries/The_Poz_Button_07_-_Get_Out.md --no-resume
   python3 convert_reviews.py --input-dir summaries --out-dir pipeline-examples
   python3 convert_reviews.py --input-dir summaries --limit 1 --no-resume
 """
@@ -44,20 +42,22 @@ Method to keep (this is the value of the source):
 - retain the structure and methodology of how a film is critiqued, deconstructed and analyzed
 
 Content rules:
-- Keep load-bearing first-act scenes, names, props, and lines from the
-  source. Those are the claims that matter. Do not keep the source's
-  plot dump of a secret, twist, true motive, or ending.
-- Do not keep the source's verdict on America, a race, a party, "the
-  culture," a target audience, or who is perpetually right or wrong.
-  If the source made that speech, hide it (kakusu): put the same reading
-  into what a character does, what the camera loves, who is the joke,
-  and who never pays.
+- Keep every load-bearing claim, scene, name, and reading from the source.
 - Do not invent credits, scenes, lawsuits, or symbols the source does not
   state. If the source is unsure, keep the uncertainty.
 - If the source reviews several films, keep each film separate, in order.
 - Third person about the film. Do not impersonate the source hosts.
 - Do not name the source show, hosts, guests, or "the hosts argue."
 - Write as if the pictures themselves are the evidence.
+- Rewrite spoilers: Write as a first-watch adult who has not
+  been told the secret. Do not explicitly name the twist.
+  Words like "reveals," "it turns out," "the twist is," "in the end,"
+  "actually," and "the narrative reveals that" are almost always a
+  spoiler dump — cut them and the clause that follows.
+  If the source's reading depends on a hidden mechanism, keep the
+  reading in setup and tone only: billed visit, who the camera likes,
+  who feels like the joke, hospitality that starts to feel like a
+  procedure. Do not say what the procedure is.
 
 Jersey to remove (tone only):
 - Team labels as the writer's identity: we/they, left/right, woke/based,
@@ -70,64 +70,14 @@ Jersey to remove (tone only):
 - Theory-word dumps (agency, -normative, validates, celebrates) when a
   picture will do: "she decides," "no gay couple is shown"
 
-- Culture-war tags for cast mix or sermon-absence. If the source means the
-  film is homogeneous, wholesome, or does not preach, say that. Do not say
-  "whitewashed," "political correctness," "woke," "DEI," or "degeneracy."
-  Naming a later film as a contrast is fine when the source did.
-
-  Source-shaped jersey:
-  The film is largely "whitewashed" and wholesome, lacking the explicit
-  political correctness associated with later animated films like *Rio*.
-  The film illustrates a dynamic where white people are viewed as inherently privileged and wrong, regardless of their individual actions.
-
-  Dual-reader (keep the claim, drop the jersey):
-  The film is largely wholesome, lacking the explicit political message
-  associated with later animated films like *Rio*.
-  The film shows characters being judged by their group identity rather than their individual actions.
-
-- Kakusu: hide the argument in staging. Do not announce a worldview,
-  meme culture, target audience, or cultural divide.  A liker must not
-  feel lectured; a hater must not feel recruited. Both should recognize
-  the same props.
-
-  Source-shaped jersey:
-  The movie demonstrates the futility of white liberal signaling.
-  The film serves as a vehicle for "Black Twitter" memes and a critique of white liberalism
-  
-  Kakusu (same film, pictures only):
-  The movie shows how empty gestures of allyship accomplish little.
-  The film draws heavily on internet meme culture while critiquing well-meaning allyship.
-
-- Spoilers are a hard fail. Write as a first-watch adult who has not
-  been told the secret. Do not name the twist, the true nature of a
-  household or plan, who was lying, who dies, who wins, or what the
-  last image "really" means if that meaning is the reveal.
-  Words like "reveals," "it turns out," "the twist is," "in the end,"
-  "actually," and "the narrative reveals that" are almost always a
-  spoiler dump — cut them and the clause that follows.
-  If the source's reading depends on a hidden mechanism, keep the
-  reading in setup and tone only: billed visit, who the camera likes,
-  who feels like the joke, hospitality that starts to feel like a
-  procedure. Do not say what the procedure is.
-
-  Spoiler (do not write this):
-  The narrative reveals that the household is part of a cult that
-  abducts Black people to transplant their consciousness into white
-  bodies.
-
-  First-watch (same film, no secret):
-  Chris visits his girlfriend's family. The house is too polite. The
-  servants feel off. A teacup, a deer, a parlor game: hospitality
-  starts to feel like a procedure.
-
 Voice:
 - Active voice. Name the scene, not the lecture.
 - Dual-reader: a liker and a hater must both say "yes, that is the film."
 - No "sells a vision," "the film's thesis is," or "this ending inverts"
   as an opener. Open on the billed title or a picture.
-- If billed plot and early pictures disagree, trust the pictures you
-  can name without unmasking the plot. Do not argue from the ending.
+- If billed plot and last image disagree, the last image is the argument.
 - If no argument is on screen, write entertainment and stop.
+- Kakusu: hide the argument in staging. Do not announce a worldview. A liker must not feel lectured; a hater must not feel recruited. Both should recognize the same props.
 
 Length: about [[WORDS]] words (not characters). Stay within 15%.
 
@@ -277,7 +227,6 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--input-dir",
         "--reviews",
-        "--file",
         dest="input_dir",
         type=Path,
         default=DEFAULT_INPUT,
